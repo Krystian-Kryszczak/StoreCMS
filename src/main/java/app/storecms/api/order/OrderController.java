@@ -20,7 +20,7 @@ public class OrderController {
     }
     // -------------------------------------------------- //
     @GetMapping("api/order/validate/")
-    public boolean validate(@RequestBody List<Product> list) {
+    public Mono<Boolean> validate(@RequestBody List<Product> list) {
         return orderService.validateProducts(list);
     }
     @Secured("USER")

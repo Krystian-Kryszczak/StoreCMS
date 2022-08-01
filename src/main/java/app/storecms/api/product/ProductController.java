@@ -11,27 +11,28 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 
 @RestController
+@RequestMapping("/api/products/")
 public class ProductController {
     ProductService productService;
     public ProductController(@Autowired ProductService productService) {
         this.productService = productService;
     }
     // -------------------------------------------------- //
-    @GetMapping("/api/products/{id}")
+    @GetMapping("{id}")
     public Mono<Product> getProduct(@PathVariable String id) {
         return productService.getProduct(id);
     }
-    @GetMapping("/api/products/search/{query}")
+    @GetMapping("search/{query}")
     public Flux<Product> searchProducts(@PathVariable String query, @RequestAttribute HashMap<String, String> attributes) {
         return productService.searchProducts(query, attributes);
     }
     @Secured("ADMIN")
-    @PostMapping("/api/products/")
+    @PostMapping
     public Mono<Boolean> addProduct(@RequestBody Product product) {
         return productService.addProduct(product);
     }
     @Secured("ADMIN")
-    @GetMapping("/api/products/{id}")
+    @DeleteMapping("{id}")
     public Mono<Boolean> deleteProduct(@PathVariable String id) {
         return productService.deleteProduct(id);
     }

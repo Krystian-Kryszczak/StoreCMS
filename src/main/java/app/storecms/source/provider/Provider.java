@@ -19,13 +19,13 @@ public abstract class Provider {
         this.providerLabel = providerLabel;
         providerService.registerProvider(this);
     }
-    public Mono<Boolean> submitOrder(Order order) {
-        return Mono.just(false); // TODO
+    public abstract Mono<Boolean> submitOrder(Order order);
+    public Mono<Boolean> submitAllOrders(List<Order> orders) {
+        return Flux.fromIterable(orders).flatMap(this::submitOrder).all(Boolean::booleanValue);
     }
-    public Mono<Boolean> validateProducts(List<Product> list) {
-        return null; // TODO
+    public abstract Mono<Boolean> validateProduct(Product product);
+    public Mono<Boolean> validateProducts(List<Product> products) {
+        return Flux.fromIterable(products).flatMap(this::validateProduct).all(Boolean::booleanValue);
     }
-    public Flux<Product> fetchProducts() {
-        return null; // TODO
-    }
+    public abstract Flux<Product> fetchProducts();
 }
