@@ -7,7 +7,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-@Service
 public interface ProductService {
     Mono<Product> getProduct(String id);
     Mono<Boolean> addProduct(Product product);

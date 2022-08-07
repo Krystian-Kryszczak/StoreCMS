@@ -1,7 +1,6 @@
 package app.storecms.api.category;
 
 import app.storecms.model.shopping.basis.category.Category;
-import app.storecms.model.shopping.basis.product.Product;
 import app.storecms.service.category.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -24,7 +23,7 @@ public class CategoryController {
         return categoryService.getCategories();
     }
     @GetMapping("api/categories/{name}/")
-    Mono<List<Product>> searchInCategory(@PathVariable String name, Map<String,String> allParams) {
+    Mono<List<app.storecms.model.shopping.basis.product.Product>> searchInCategory(@PathVariable String name, Map<String,String> allParams) {
         return categoryService.searchInCategory(name, allParams).collect(Collectors.toList());
     }
     @Secured("ADMIN")

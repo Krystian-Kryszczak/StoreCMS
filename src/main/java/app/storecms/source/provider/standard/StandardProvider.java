@@ -18,7 +18,6 @@ public class StandardProvider extends Provider {
     public Mono<Boolean> validateProduct(Product product) {
         return Mono.just(false); // TODO
     }
-
     @Override
     public Flux<Product> fetchProducts() {
         return Flux.empty();

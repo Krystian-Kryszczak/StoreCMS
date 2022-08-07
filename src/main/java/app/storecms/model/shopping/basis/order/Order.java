@@ -1,33 +1,36 @@
 package app.storecms.model.shopping.basis.order;
 
-import app.storecms.model.shopping.Folder;
-import app.storecms.model.shopping.basis.product.Product;
+import app.storecms.model.shopping.basis.product.ProductStack;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Data
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @Document(collation = "orders")
-public class Order implements Folder<Product> {
-    @Id
-    String id;
-    String ownerName;
-    // TODO require ownerId
-
-    @Override
-    public Mono<Product> addItem(Product item) {
-        return null;
+public class Order {
+    @Id @Getter
+    final String id;
+    @Getter
+    final String ownerId; // required
+    final List<ProductStack> productsList;
+    public Order(String id, String ownerId) {
+        this.id = id;
+        this.ownerId = ownerId;
+        this.productsList = new ArrayList<>();
     }
-    @Override
-    public Flux<Product> getItems() {
-        return null;
+    public Flux<ProductStack> getItems() {
+        return Flux.fromIterable(productsList);
     }
-    @Override
-    public Mono<Product> removeItem(Product item) {
-        return null;
+    public Mono<ProductStack> addItem(ProductStack item) {
+        return productsList.add(item) ? Mono.just(item) : Mono.empty();
+    }
+    public Mono<ProductStack> removeItem(ProductStack item) {
+        return productsList.remove(item) ? Mono.just(item) : Mono.empty();
     }
 }

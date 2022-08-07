@@ -2,28 +2,36 @@ package app.storecms.model.shopping.basis.product;
 
 import app.storecms.model.shopping.basis.price.Price;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Setter;
+import lombok.Value;
+import lombok.experimental.NonFinal;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Getter
+import java.util.List;
+
+@Value
 @AllArgsConstructor
 @Document(collation = "products")
-public class Product {
+public class Product { // TODO updating in database
     @Id
     String id;
     String sku;
     String ean;
     String name;
-    String series;
-    String ref_num;
     String manufacturer;
-    boolean is_vendor; // Czy produkt jest od dostawcy zewnętrznego?
-    boolean is_wire; // Czy produkt jest kablem?
-    String image;
+    @Setter
+    @NonFinal
+    String mainImage;
+    List<String> images;
     String category;
     Price price;
-
     String providerLabel;
-    // TODO
+    Specification specification;
+    public boolean addImage(String imageUrl) {
+        return images.add(imageUrl);
+    }
+    public boolean removeImage(String imageUrl) {
+        return images.remove(imageUrl);
+    }
 }
