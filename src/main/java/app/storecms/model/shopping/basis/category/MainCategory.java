@@ -12,8 +12,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Document(collation = "categories")
-public class MainCategory {
-    // TODO updating in database
+public class MainCategory { // TODO updating in database
     @Id @Getter
     final String id;
     @Getter

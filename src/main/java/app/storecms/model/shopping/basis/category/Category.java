@@ -11,8 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-public class Category {
-    // TODO updating in database
+public class Category { // TODO updating in database
     @Id @Getter
     final String id;
     @Getter

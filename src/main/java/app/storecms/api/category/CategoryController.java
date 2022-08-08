@@ -2,6 +2,7 @@ package app.storecms.api.category;
 
 import app.storecms.model.shopping.basis.category.Category;
 import app.storecms.service.category.CategoryService;
+import app.storecms.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +14,10 @@ import java.util.stream.Collectors;
 
 @RestController
 public class CategoryController {
+    ProductService productService;
     CategoryService categoryService;
-    public CategoryController(@Autowired CategoryService categoryService) {
+    public CategoryController(@Autowired ProductService productService, @Autowired CategoryService categoryService) {
+        this.productService = productService;
         this.categoryService = categoryService;
     }
     // -------------------------------------------------- //
@@ -24,7 +27,7 @@ public class CategoryController {
     }
     @GetMapping("api/categories/{name}/")
     Mono<List<app.storecms.model.shopping.basis.product.Product>> searchInCategory(@PathVariable String name, Map<String,String> allParams) {
-        return categoryService.searchInCategory(name, allParams).collect(Collectors.toList());
+        return productService.searchProducts(name, allParams).collect(Collectors.toList());
     }
     @Secured("ADMIN")
     @PostMapping("api/categories/")

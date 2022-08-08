@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-public class SubCategory {
-    // TODO updating in database
+public class SubCategory { // TODO updating in database
     @Id
     @Getter
     final String id;
