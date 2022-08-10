@@ -3,7 +3,6 @@ package app.storecms.model.shopping.basis.category;
 import app.storecms.model.shopping.basis.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -11,16 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-public class Category { // TODO updating in database
-    @Id @Getter
-    final String id;
+public class Category {
+    @Getter
+    private final MainCategory mainCategory;
     @Getter
     final String name;
     final List<String> productList;
-    final List<String> subCategories;
-    public Category(String id, String name) {
-        this.id = id;
+    final List<SubCategory> subCategories;
+    public Category(String name, MainCategory mainCategory) {
         this.name = name;
+        this.mainCategory = mainCategory;
         this.productList = new ArrayList<>();
         this.subCategories = new ArrayList<>();
     }
@@ -34,13 +33,16 @@ public class Category { // TODO updating in database
         return Mono.just(productList.remove(item.getId()));
     }
     // ---------------------------------------------------------------------------------------------------- //
-    public Flux<String> getSubCategoriesIds() {
+    public Flux<SubCategory> getSubCategoriesIds() {
         return Flux.fromIterable(subCategories);
     }
     public Mono<Boolean> addSubCategory(SubCategory category) {
-        return Mono.just(subCategories.add(category.getId()));
+        return Mono.just(subCategories.add(category)).then(update());
     }
     public Mono<Boolean> removeSubCategory(SubCategory category) {
-        return Mono.just(subCategories.remove(category.getId()));
+        return Mono.just(subCategories.remove(category)).then(update());
+    }
+    Mono<Boolean> update() {
+        return mainCategory.update();
     }
 }

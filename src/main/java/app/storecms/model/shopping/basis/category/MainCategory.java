@@ -1,7 +1,9 @@
 package app.storecms.model.shopping.basis.category;
 
+import app.storecms.service.category.CategoryService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import reactor.core.publisher.Flux;
@@ -12,7 +14,9 @@ import java.util.List;
 
 @AllArgsConstructor
 @Document(collation = "categories")
-public class MainCategory { // TODO updating in database
+public class MainCategory {
+    @Autowired
+    public CategoryService categoryService;
     @Id @Getter
     final String id;
     @Getter
@@ -27,9 +31,12 @@ public class MainCategory { // TODO updating in database
         return Flux.fromIterable(categories);
     }
     public Mono<Boolean> addCategory(Category category) {
-        return Mono.just(categories.add(category));
+        return Mono.just(categories.add(category)).then(update());
     }
     public Mono<Boolean> removeCategory(Category category) {
-        return Mono.just(categories.remove(category));
+        return Mono.just(categories.remove(category)).then(update());
+    }
+    Mono<Boolean> update() {
+        return categoryService.updateCategory(this);
     }
 }

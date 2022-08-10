@@ -1,6 +1,6 @@
 package app.storecms.api.category;
 
-import app.storecms.model.shopping.basis.category.Category;
+import app.storecms.model.shopping.basis.category.MainCategory;
 import app.storecms.service.category.CategoryService;
 import app.storecms.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class CategoryController {
     }
     @Secured("ADMIN")
     @PostMapping("api/categories/")
-    Mono<Boolean> addCategory(@RequestBody Category category) {
+    Mono<Boolean> addCategory(@RequestBody MainCategory category) {
         return categoryService.addCategory(category);
     }
     @Secured("ADMIN")
